@@ -1,2 +1,2 @@
-# BLUPs
-Work with Thomas Lumley to include survey weights in models including random effects
+# Estimating BLUPs in complex survey settings
+Various approaches to estimate random effects in linear mixed models with complex survey design weights.
