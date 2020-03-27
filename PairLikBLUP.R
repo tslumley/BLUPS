@@ -91,7 +91,7 @@ BLUPS <- coef(fit)$g[,1] # - coef(summary(fit))[1,1]
 ## We may have to subtract the fixed intercept: probably
 
 resids <- Yp - Xp%*%beta_P
-ZL_vec <-  matrix(sapply(1:(nrow(Xp)/2), function(ind){
+ZL_vec <-  matrix(sapply(1:(nrow(Xp)/2), function(ind){ ## fix when it works
   crossprod(Zp[c(2*ind - 1, 2*ind)], L_mat) ## adjust when it's a matrix
 }), ncol=1, byrow = TRUE) ## change 1 for dimension z
 
@@ -105,9 +105,14 @@ Lresi_p <- matrix(sapply(1:(nrow(Xp)/2), function(ind){
   crossprod(resids[c(2*ind - 1, 2*ind)], L_mat)
 }), ncol=1, byrow=TRUE)
 
-## THESE ARE WRONG CURRENTLY
-bis  <- G %*% crossprod(ZL_mat, Lresi_p)
-## 
-weight_vec <- sapply(seq(1, N), function(indx){
-  c(rep(sqrt(pg[indx]*in1[indx]), 20))*sqrt(3/(4*19)) ## 20 is 5 choose 2 * 2. But 20 also for cluster size, coincidence
-})
+## Everything works.
+bis  <- G %*% crossprod(ZL_mat, Lresi_p) / 19 ## This is the number of times each observation is included
+
+ZL_mat <- matrix(ZL_vec[1:380], ncol=1)
+Gstar <- as.matrix(G[1,1])
+
+subset_indx <- which(pairwise_indx[1:380] %in% c(1,2,3,4,5))
+b1  <- Gstar %*% crossprod(ZL_mat, Lresi_p[1:380]) / 19
+bis_un  <- Gstar %*% crossprod(ZL_mat[subset_indx], Lresi_p[subset_indx])*4 / 19
+bis_small  <- Gstar %*% crossprod(ZL_mat[subset_indx], Lresi_p[subset_indx]) / 19
+
