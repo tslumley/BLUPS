@@ -20,7 +20,7 @@ df$u<-with(df, rnorm(N)[g])
 df$y<-with(df, x+u+rnorm(N,s=2))
 
 ## oversample extreme `u` to bias random-intercept variance
-pg <-exp(abs(df$u/2)-2.2)[df$t==1]  
+pg <- exp(abs(df$u/2)-2.2)[df$t==1]  
 
 in1<-rbinom(N,1,pg)==1
 in2<-rep(1:5, length(in1)) ## sample 5 from each cluster
